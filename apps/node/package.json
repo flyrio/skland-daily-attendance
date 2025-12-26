@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@skland-x/core": "workspace:*",
-    "@skland-x/notification": "workspace:*",
+    "statocysts": "^0.9.1",
     "tsx": "^4.21.0"
   },
   "devDependencies": {

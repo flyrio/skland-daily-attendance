@@ -1,15 +1,10 @@
 import process from 'node:process'
 import { setTimeout } from 'node:timers/promises'
 import { attendance, auth, getBinding, signIn } from '@skland-x/core'
-import { bark, messagePusher, serverChan } from '@skland-x/notification'
+import { createSender } from 'statocysts'
 
 interface Options {
-  /** server 酱推送功能的启用，false 或者 server 酱的token */
-  withServerChan?: false | string
-  /** bark 推送功能的启用，false 或者 bark 的 URL */
-  withBark?: false | string
-  /** 消息推送功能的启用，false 或者 message-pusher 的 WebHook URL */
-  withMessagePusher?: false | string
+  notificationUrls: string | string[]
 }
 
 function createCombinePushMessage(options: Options) {
@@ -24,15 +19,11 @@ function createCombinePushMessage(options: Options) {
   const push = async () => {
     const title = `【森空岛每日签到】`
     const content = messages.join('\n\n')
-    if (options.withServerChan) {
-      await serverChan(options.withServerChan, title, content)
-    }
-    if (options.withBark) {
-      await bark(options.withBark, title, content)
-    }
-    if (options.withMessagePusher) {
-      await messagePusher(options.withMessagePusher, title, content)
-    }
+    const urls = Array.isArray(options.notificationUrls) ? options.notificationUrls : [options.notificationUrls]
+    const sender = createSender(urls)
+
+    await sender.send(title, content)
+
     // quit with error
     if (hasError)
       process.exit(1)
