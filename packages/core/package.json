@@ -25,13 +25,13 @@
     "access": "public"
   },
   "dependencies": {
-    "date-fns": "^4.1.0",
-    "mima-kit": "^0.1.0",
-    "ofetch": "^1.5.1",
-    "ufo": "^1.6.1"
+    "date-fns": "catalog:",
+    "mima-kit": "catalog:",
+    "ofetch": "catalog:",
+    "ufo": "catalog:"
   },
   "devDependencies": {
-    "tsdown": "^0.18.3",
-    "vitest": "^4.0.16"
+    "tsdown": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -18,8 +18,8 @@ on:
         required: false
     inputs:
       repository:
-        description: 'The repository to run the workflow on'
-        default: 'enpitsuLin/skland-daily-attendance'
+        description: The repository to run the workflow on
+        default: enpitsuLin/skland-daily-attendance
         required: false
         type: string
 

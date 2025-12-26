@@ -2,6 +2,25 @@ packages:
   - packages/*
   - apps/*
 
+catalog:
+  '@antfu/eslint-config': ^6.7.3
+  '@cloudflare/vitest-pool-workers': ^0.11.1
+  '@date-fns/tz': ^1.4.1
+  '@types/node': ^25.0.3
+  date-fns: ^4.1.0
+  defu: ^6.1.4
+  eslint: ^9.39.2
+  mima-kit: ^0.1.0
+  ofetch: ^1.5.1
+  tsdown: ^0.18.3
+  tsx: ^4.21.0
+  typescript: ^5.9.3
+  ufo: ^1.6.1
+  unctx: ^2.5.0
+  unstorage: ^1.17.3
+  vitest: ^4.0.16
+  wrangler: ^4.54.0
 catalogs:
   lib:
     skland-kit: ^0.1.5
+    statocysts: ^0.9.1

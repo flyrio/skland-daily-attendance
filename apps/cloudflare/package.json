@@ -14,16 +14,16 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@date-fns/tz": "^1.4.1",
+    "@date-fns/tz": "catalog:",
     "@skland-x/core": "workspace:*",
-    "date-fns": "^4.1.0",
-    "defu": "^6.1.4",
+    "date-fns": "catalog:",
+    "defu": "catalog:",
     "skland-kit": "catalog:lib",
-    "unctx": "^2.5.0",
-    "unstorage": "^1.17.3"
+    "unctx": "catalog:",
+    "unstorage": "catalog:"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.11.1",
-    "wrangler": "^4.54.0"
+    "@cloudflare/vitest-pool-workers": "catalog:",
+    "wrangler": "catalog:"
   }
 }

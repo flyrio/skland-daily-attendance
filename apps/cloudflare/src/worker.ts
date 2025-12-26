@@ -200,7 +200,7 @@ export default {
         const characterList = await retry(() => getArknightsCharacterList(cred, signToken))
         await storage.setItem(
           `${config.BINDINGS_STORAGE_PREFIX}${userId}`,
-          characterList.map(i => i.uid.toString())
+          characterList.map(i => i.uid.toString()),
         )
 
         console.log(`账号 ${index + 1} 共有 ${characterList.length} 个角色需要签到`)

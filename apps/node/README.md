@@ -35,7 +35,6 @@ Node.js 环境运行的森空岛自动签到服务，可以使用 Github Action 
 
 ## 启动 Github Action
 
-
 > Actions 默认为关闭状态，Fork 之后需要手动执行一次，若成功运行其才会激活。
 
 返回项目主页面，点击上方的`Actions`，再点击左侧的`attendance`，再点击`Run workflow`
