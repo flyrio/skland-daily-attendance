@@ -1,5 +1,5 @@
 import type { AttendanceResult } from '~/utils/index'
-import process from 'node:process'
+import { useRuntimeConfig } from 'nitro/runtime-config'
 import { defineTask } from 'nitro/task'
 import { createClient } from 'skland-kit'
 import { attendCharacter, createMessageCollector } from '~/utils/index'
@@ -10,18 +10,20 @@ export default defineTask<'success' | 'failed'>({
     description: '每日签到',
   },
   async run() {
-    const tokens = process.env.SKLAND_TOKEN?.split(',') ?? []
+    const config = useRuntimeConfig()
+
+    const tokens = config.app.SKLAND_TOKEN
     if (tokens.length === 0) {
       return { result: 'success' }
     }
 
     const messageCollector = createMessageCollector({
-      notificationUrls: process.env.NOTIFICATION_URLS?.split(',') ?? [],
+      notificationUrls: config.app.NOTIFICATION_URLS,
     })
 
     messageCollector.log('## 明日方舟签到')
 
-    const maxRetries = Number(process.env.MAX_RETRIES ?? '3')
+    const maxRetries = config.app.MAX_RETRIES
 
     const results: AttendanceResult[] = []
 

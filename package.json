@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:dev",
+    "@types/node": "catalog:types",
     "eslint": "catalog:dev",
     "nitro": "catalog:dev",
     "rolldown": "catalog:build",
