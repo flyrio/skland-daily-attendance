@@ -1,8 +1,8 @@
 # Build stage
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 
 # Install pnpm
-RUN corepack enable && corepack prepare pnpm@10.28.2 --activate
+RUN corepack enable
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ COPY . .
 RUN pnpm run build
 
 # Production stage
-FROM node:22-alpine
+FROM node:24-alpine
 
 # Set non-root user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
