@@ -1,0 +1,62 @@
+name: Sync upstream
+
+on:
+  schedule:
+    # 在每日签到工作流（16:00 UTC）之前同步上游更新
+    - cron: '55 15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync from upstream
+        env:
+          UPSTREAM_REPO: AEtherside/skland-daily-attendance
+          UPSTREAM_BRANCH: main
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          if git remote get-url upstream >/dev/null 2>&1; then
+            git remote set-url upstream "https://github.com/${UPSTREAM_REPO}.git"
+          else
+            git remote add upstream "https://github.com/${UPSTREAM_REPO}.git"
+          fi
+
+          git fetch --prune upstream "${UPSTREAM_BRANCH}"
+          git fetch origin "${UPSTREAM_BRANCH}"
+
+          git checkout "${UPSTREAM_BRANCH}"
+
+          # 优先 fast-forward；如本仓库存在自定义提交则回退为普通 merge（可能产生 merge commit）
+          git merge --ff-only "upstream/${UPSTREAM_BRANCH}" || git merge --no-edit "upstream/${UPSTREAM_BRANCH}"
+
+          origin_head="$(git rev-parse "origin/${UPSTREAM_BRANCH}")"
+          local_head="$(git rev-parse "HEAD")"
+
+          if [ "${origin_head}" = "${local_head}" ]; then
+            echo "Already up to date."
+            exit 0
+          fi
+
+          git push origin "HEAD:${UPSTREAM_BRANCH}"
