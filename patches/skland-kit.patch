@@ -1,0 +1,105 @@
+diff --git a/dist/index.js b/dist/index.js
+index 8fd9574672cdcec73c1e73a2542720e82cc9bed2..5465e724eae2bbd647a0746cdf58a4e501918b8b 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -6,7 +6,16 @@ import * as mima from "mima-kit";
+ import { createContext } from "unctx";
+ 
+ //#region src/constants.ts
+-const SERVER_TIMESTAMP_OFFSET = -2 * 1e3;
++let SERVER_TIMESTAMP_OFFSET = 0;
++let _timeCalibrated = false;
++async function _calibrateServerTime() {
++	if (_timeCalibrated) return;
++	try {
++		const r = await fetch("https://zonai.skland.com/web/v1/user/auth/generate_cred_by_code", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" });
++		const d = await r.json();
++		if (d.timestamp) { SERVER_TIMESTAMP_OFFSET = Date.now() - parseInt(d.timestamp) * 1000; _timeCalibrated = true; }
++	} catch(e) {}
++}
+ /**
+ * 森空岛访问 token
+ * @description 没下面的重要，会过期，类似 `accessToken`
+@@ -311,44 +320,9 @@ async function getDid(storage) {
+ 		const did = await storage.getItem(STORAGE_DID_KEY);
+ 		if (did) return did;
+ 	}
+-	const uid = crypto.randomUUID();
+-	const priId = (await md5(uid)).substring(0, 16);
+-	const ep = await encryptRSA(uid, SM_CONFIG.publicKey);
+-	const desTarget = {
+-		...BROWSER_ENV,
+-		vpw: crypto.randomUUID(),
+-		svm: Date.now(),
+-		trees: crypto.randomUUID(),
+-		pmf: Date.now(),
+-		protocol: 102,
+-		organization: SM_CONFIG.organization,
+-		appId: SM_CONFIG.appId,
+-		os: "web",
+-		version: "3.0.0",
+-		sdkver: "3.0.0",
+-		box: "",
+-		rtype: "all",
+-		smid: await getSmId(),
+-		subVersion: "1.0.0",
+-		time: 0
+-	};
+-	desTarget.tn = await md5(getTn(desTarget));
+-	const body = {
+-		appId: "default",
+-		compress: 2,
+-		data: await encryptAES(await gzipObject(await encryptObjectByDESRules(desTarget, DES_RULE)), priId),
+-		encode: 5,
+-		ep,
+-		organization: SM_CONFIG.organization,
+-		os: "web"
+-	};
+-	const resp = await (await fetch(devices_info_url, {
+-		method: "POST",
+-		headers: { "Content-Type": "application/json" },
+-		body: JSON.stringify(body)
+-	})).json();
+-	if (resp.code !== 1100) throw new Error("did计算失败，请联系作者");
+-	return `B${resp.detail.deviceId}`;
++	const did = "B" + Buffer.from(crypto.randomUUID() + crypto.randomUUID()).toString("base64");
++	await storage.setItem(STORAGE_DID_KEY, did);
++	return did;
+ }
+ 
+ //#endregion
+@@ -359,6 +333,7 @@ function parseURL(ctx) {
+ 	return new URL(url, ctx.options.baseURL);
+ }
+ async function signRequest(ctx, storage) {
++	await _calibrateServerTime();
+ 	const token = await storage.get(STORAGE_OAUTH_TOKEN_KEY);
+ 	const cred = await storage.get(STORAGE_CREDENTIAL_KEY);
+ 	assert(cred, "【skland-kit】森空岛 cred 未获取");
+@@ -373,7 +348,7 @@ async function signRequest(ctx, storage) {
+ 		dId: await getDid(storage),
+ 		vName: "1.21.0"
+ 	};
+-	const signature = await md5(await hmacSha256(token, `${parsedURL.pathname}${query}${ctx.options.body ? JSON.stringify(ctx.options.body) : ""}${timestamp}${JSON.stringify(signatureHeaders)}`));
++	const _signData = `${parsedURL.pathname}${query}${ctx.options.body ? JSON.stringify(ctx.options.body) : ""}${timestamp}${JSON.stringify(signatureHeaders)}`; const { createHmac, createHash } = await import("node:crypto"); const signature = createHash("md5").update(createHmac("sha256", token).update(_signData).digest("hex")).digest("hex");
+ 	Object.entries(signatureHeaders).forEach(([key, value]) => {
+ 		headers.append(key, value);
+ 	});
+@@ -562,13 +537,11 @@ function createClient(config = {}) {
+ 			method: "POST",
+ 			headers: {
+ 				"content-type": "application/json",
+-				"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+-				"referer": "https://www.skland.com/",
+-				"origin": "https://www.skland.com",
++				"user-agent": "Skland/1.21.0 (com.hypergryph.skland; build:102100065; Android 14; ) Okhttp/4.11.0",
+ 				"dId": did,
+-				"platform": "3",
+-				"timestamp": `${Math.floor(Date.now() / 1e3)}`,
+-				"vName": "1.0.0"
++				"platform": "1",
++				"timestamp": `${Math.floor((Date.now() - SERVER_TIMESTAMP_OFFSET) / 1e3)}`,
++				"vName": "1.21.0"
+ 			},
+ 			body: {
+ 				code: authorizeCode,

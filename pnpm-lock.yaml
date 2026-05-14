@@ -58,6 +58,11 @@ catalogs:
       specifier: ^25.7.0
       version: 25.7.0
 
+patchedDependencies:
+  skland-kit:
+    hash: d8c6b74551ef7a0cbca9c3a5f14f32f13e22cb9c66f19043edeebf74dbf59617
+    path: patches/skland-kit.patch
+
 importers:
 
   .:
@@ -73,7 +78,7 @@ importers:
         version: 5.10.1
       skland-kit:
         specifier: catalog:lib
-        version: 0.3.4(@upstash/redis@1.38.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.10.1)
+        version: 0.3.4(patch_hash=d8c6b74551ef7a0cbca9c3a5f14f32f13e22cb9c66f19043edeebf74dbf59617)(@upstash/redis@1.38.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.10.1)
       statocysts:
         specifier: catalog:lib
         version: 0.11.1(typescript@6.0.3)
@@ -3206,8 +3211,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.56.1(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.56.1(typescript@6.0.3)
-      '@typescript-eslint/types': 8.56.1
+      '@typescript-eslint/tsconfig-utils': 8.59.3(typescript@6.0.3)
+      '@typescript-eslint/types': 8.59.3
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -4780,7 +4785,7 @@ snapshots:
 
   sisteransi@1.0.5: {}
 
-  skland-kit@0.3.4(@upstash/redis@1.38.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.10.1):
+  skland-kit@0.3.4(patch_hash=d8c6b74551ef7a0cbca9c3a5f14f32f13e22cb9c66f19043edeebf74dbf59617)(@upstash/redis@1.38.0)(aws4fetch@1.0.20)(db0@0.3.4)(ioredis@5.10.1):
     dependencies:
       date-fns: 4.1.0
       defu: 6.1.7
