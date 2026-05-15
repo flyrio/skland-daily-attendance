@@ -48,8 +48,11 @@ jobs:
 
           git checkout "${UPSTREAM_BRANCH}"
 
-          # 优先 fast-forward；如本仓库存在自定义提交则回退为普通 merge（可能产生 merge commit）
-          git merge --ff-only "upstream/${UPSTREAM_BRANCH}" || git merge --no-edit "upstream/${UPSTREAM_BRANCH}"
+          # 优先 fast-forward；如本仓库存在自定义提交则回退为普通 merge
+          # 使用 -X ours 策略：冲突时保留本仓库的自定义修改（如 cron 表达式、patch 等）
+          if ! git merge --ff-only "upstream/${UPSTREAM_BRANCH}" 2>/dev/null; then
+            git merge --no-edit -X ours "upstream/${UPSTREAM_BRANCH}"
+          fi
 
           origin_head="$(git rev-parse "origin/${UPSTREAM_BRANCH}")"
           local_head="$(git rev-parse "HEAD")"
