@@ -21,6 +21,10 @@ catalogs:
     '@types/node': ^25.7.0
 patchedDependencies:
   skland-kit: patches/skland-kit.patch
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd
 shellEmulator: true
 
 trustPolicy: no-downgrade
