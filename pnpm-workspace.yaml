@@ -13,7 +13,7 @@ catalogs:
     '@upstash/redis': ^1.38.0
     aws4fetch: ^1.0.20
     ioredis: ^5.10.1
-    skland-kit: ^0.3.4
+    skland-kit: ^0.3.5
     statocysts: ^0.11.1
     unctx: ^2.5.0
     unstorage: 2.0.0-alpha.7

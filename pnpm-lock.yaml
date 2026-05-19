@@ -42,8 +42,8 @@ catalogs:
       specifier: ^5.10.1
       version: 5.10.1
     skland-kit:
-      specifier: ^0.3.4
-      version: 0.3.4
+      specifier: ^0.3.5
+      version: 0.3.5
     statocysts:
       specifier: ^0.11.1
       version: 0.11.1
@@ -1200,8 +1200,8 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
-  date-fns@4.1.0:
-    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+  date-fns@4.2.1:
+    resolution: {integrity: sha512-37RhSdxaG1suen6VDCza6rNrQfooyQh57HFVPwQGEq2QWliVLzPQZ8Oa017weOu+HZCnzI7N3Pf/wyoBKfEqrA==}
 
   db0@0.3.4:
     resolution: {integrity: sha512-RiXXi4WaNzPTHEOu8UPQKMooIbqOEyqA1t7Z6MsdxSCeb8iUC9ko3LcmsLmeUt2SM5bctfArZKkRQggKZz7JNw==}
@@ -1240,6 +1240,9 @@ packages:
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
+
+  defu@6.1.7:
+    resolution: {integrity: sha512-7z22QmUWiQ/2d0KkdYmANbRUVABpZ9SNYyH5vx6PZ+nE5bcC0l7uFvEfHlyld/HcGBFTL536ClDt3DEcSlEJAQ==}
 
   defu@6.1.7:
     resolution: {integrity: sha512-7z22QmUWiQ/2d0KkdYmANbRUVABpZ9SNYyH5vx6PZ+nE5bcC0l7uFvEfHlyld/HcGBFTL536ClDt3DEcSlEJAQ==}
@@ -2222,8 +2225,8 @@ packages:
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
-  skland-kit@0.3.4:
-    resolution: {integrity: sha512-TKc0QtM9gCwKA+45AP5yyhxJZRTV515Thzyqmr4azHj4ZZkWpSUxzDVm/Ftf9ntfA+1abXEbFctTOz4d6wWNHg==}
+  skland-kit@0.3.5:
+    resolution: {integrity: sha512-AUD0G3MEcwtDMn4wMbuwfNT7XCxnDHW+7q5BpE+Ja4mOCCR6w4lKPDRE5wbV8pz+Gz+rINbnC0/KCYjizrsI3Q==}
     engines: {node: '>=20.18.0'}
 
   source-map-js@1.2.1:
@@ -3509,7 +3512,7 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  date-fns@4.1.0: {}
+  date-fns@4.2.1: {}
 
   db0@0.3.4: {}
 
@@ -3522,6 +3525,8 @@ snapshots:
       character-entities: 2.0.2
 
   deep-is@0.1.4: {}
+
+  defu@6.1.7: {}
 
   defu@6.1.7: {}
 
