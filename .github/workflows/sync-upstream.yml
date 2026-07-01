@@ -48,6 +48,9 @@ jobs:
 
           git checkout "${UPSTREAM_BRANCH}"
 
+          # 记录合并前本地版本，用于之后恢复本仓库自己的工作流文件
+          pre_merge="$(git rev-parse HEAD)"
+
           # 优先 fast-forward；如本仓库存在自定义提交则回退为普通 merge
           # 使用 -X ours 策略：冲突时保留本仓库的自定义修改（如 cron 表达式、patch 等）
           if ! git merge --ff-only "upstream/${UPSTREAM_BRANCH}" 2>/dev/null; then
@@ -58,6 +61,15 @@ jobs:
               git add -A
               git commit --no-edit
             fi
+          fi
+
+          # 默认 GITHUB_TOKEN（GitHub App 身份）没有 workflows 权限，push 若包含对
+          # .github/workflows/ 的任何增删改会被拒绝。本 fork 只需同步签到代码，
+          # 因此始终把 workflows 目录恢复成本仓库自己的版本，不吸收上游的工作流改动。
+          git checkout "${pre_merge}" -- .github/workflows
+          git add .github/workflows
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(sync): 保留本仓库工作流，忽略上游 .github/workflows 改动"
           fi
 
           origin_head="$(git rev-parse "origin/${UPSTREAM_BRANCH}")"
