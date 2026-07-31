@@ -14,7 +14,7 @@ catalogs:
     aws4fetch: ^1.0.20
     ioredis: ^5.11.1
     skland-kit: ^0.3.5
-    statocysts: ^0.11.1
+    statocysts: ^0.13.0
     unctx: ^2.5.0
     unstorage: 2.0.0-alpha.7
   types:
